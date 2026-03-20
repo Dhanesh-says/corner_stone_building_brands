@@ -1,0 +1,255 @@
+/* Import Modern Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap');
+
+/* Base Styles */
+:root {
+    --bg-dark: #F8FAFC;
+    --sidebar-bg: #FFFFFF;
+    --bg-panel: #FFFFFF;
+    --text-primary: #1E293B;
+    --text-secondary: #64748B;
+    --active-blue: #3B82F6;
+    --accent-blue: #3B82F6;
+    --accent-bronze: #F59E0B;
+    --accent-green: #10B981;
+    --border-color: #E2E8F0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-dark);
+}
+
+/* Streamlit main background override */
+.stApp {
+    background-color: var(--bg-dark);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+.stMarkdown h1,
+.stMarkdown h2,
+.stMarkdown h3 {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    background: linear-gradient(to right, #1E293B, #64748B);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+/* Custom Cards / Metric Containers */
+div[data-testid="stMetricValue"] {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+div[data-testid="stMetricLabel"] {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+div[data-testid="metric-container"] {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+div[data-testid="metric-container"]:hover {
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    background: rgba(241, 245, 249, 0.8);
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.stTabs [aria-selected="true"] {
+    background: #FFFFFF;
+    color: var(--active-blue);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Expander Panels - Used for Insights */
+.streamlit-expanderHeader {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    color: var(--accent-bronze);
+    background-color: rgba(217, 119, 6, 0.05);
+    border-radius: 8px;
+    border-bottom: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+/* Sidebar Styling (Override native sidebar) */
+section[data-testid="stSidebar"] {
+    background-color: var(--sidebar-bg);
+    border-right: 1px solid var(--border-color);
+}
+
+section[data-testid="stSidebar"] hr {
+    border-top: 1px solid var(--border-color);
+}
+
+/* Custom Navigation Button Styling */
+.nav-section {
+    color: #64748B;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.nav-item {
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-item:hover {
+    background-color: #F1F5F9;
+    color: #1E293B;
+}
+
+.nav-item.active {
+    background-color: #EFF6FF;
+    color: #2563EB;
+    border-left: 3px solid #3B82F6;
+}
+
+.nav-subitem {
+    margin-left: 28px;
+    padding: 8px 15px;
+    font-size: 0.85rem;
+    color: #64748B;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+.nav-subitem:hover {
+    color: #334155;
+}
+
+.nav-subitem.active {
+    background-color: #EFF6FF;
+    color: #2563EB;
+    border-radius: 6px;
+}
+
+/* Plotly Chart Backgrounds */
+.js-plotly-plot .plotly .bg {
+    fill: transparent !important;
+}
+
+/* Data Tables */
+[data-testid="stDataFrame"] {
+    background: var(--bg-panel);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+/* Status Indicators */
+.status-dot {
+    height: 10px;
+    width: 10px;
+    background-color: var(--accent-green);
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 8px var(--accent-green);
+    animation: pulse 2s infinite;
+}
+
+.status-dot-warning {
+    height: 10px;
+    width: 10px;
+    background-color: #F59E0B;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Glass panel components */
+.glass-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    margin-bottom: 1.5rem;
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F8FAFC;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
