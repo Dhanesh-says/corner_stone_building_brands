@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 def generate_demand_data():
-    dates_hist = pd.date_range(start="2023-01-01", end="2023-12-31", freq="M")
-    dates_proj = pd.date_range(start="2024-01-01", end="2024-12-31", freq="M")
+    dates_hist = pd.date_range(start="2025-01-01", end="2025-12-31", freq="ME")
+    dates_proj = pd.date_range(start="2026-04-01", end="2026-12-31", freq="ME")
     
     # Historical
     hist_demand = np.random.normal(loc=1000, scale=150, size=len(dates_hist)).astype(int)
