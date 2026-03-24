@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from data_mock import (
+from corner_stone_building_brands.data_mock import (
     generate_demand_data, 
     generate_demand_by_region,
     generate_install_time_data,
@@ -52,7 +52,8 @@ with st.sidebar:
     
     st.markdown("<div class='nav-item'>Agentic Platform</div>", unsafe_allow_html=True)
     st.markdown("<div class='nav-item'>MultiModal Live Agent</div>", unsafe_allow_html=True)
-    st.markdown("<div class='nav-item'>Pi Semantic</div>", unsafe_allow_html=True)
+    if st.button("🧠 Pi Semantic", use_container_width=True):
+        set_page('Pi Semantic')
     
     st.markdown("<div class='nav-section'>DATA CLOUD</div>", unsafe_allow_html=True)
     if st.button("💿 Pi Unify", use_container_width=True):
@@ -61,7 +62,12 @@ with st.sidebar:
         set_page('Pi Shield')
 
 # ----- Main Content Area -----
-if st.session_state.page == 'Pi Unify':
+if st.session_state.page == 'Pi Semantic':
+    st.title("Pi Semantic")
+    st.markdown("### Semantic Layer Configuration")
+    st.info("The Pi Semantic layer provides a unified understanding of business vocabulary across all specialized agents. It ensures that terms like 'Lost Revenue Risk' or 'Omni Order Rate' carry structured, consistent definitions when crossing boundaries between Inventory, Demand, and Financial systems.")
+
+elif st.session_state.page == 'Pi Unify':
     st.title("Pi Unify")
     st.markdown("### Information on Gemini said")
     st.markdown("""
@@ -108,46 +114,58 @@ else:
     avg_proj = df_demand_global_ref[df_demand_global_ref['Type'] == 'Projected']['Demand'].mean()
     demand_surge_pct = ((avg_proj - avg_hist) / avg_hist) * 100
 
-    st.markdown("""
-        <div style='display: flex; gap: 10px; margin-bottom: 20px; font-size: 0.85rem; font-weight: bold; padding: 10px; background: #F1F5F9; border-radius: 8px;'>
-           THEME: <span style='color: #F87171'>IDEATE</span> • <span style='color: #FBBF24'>PLAN</span> • <span style='color: #34D399'>SOURCE</span> • <span style='color: #60A5FA'>MAKE</span> • <span style='color: #818CF8'>DELIVER</span> • <span style='color: #A78BFA'>RETURN</span> • <span style='color: #F472B6'>ENABLE</span> • <span style='color: #9CA3AF'>SUPPORT</span>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<div style='font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; padding: 8px 10px; background: #F1F5F9; border-radius: 8px 8px 0 0; border: 1px solid #E2E8F0; border-bottom: none;'>THEME NAVIGATION</div>", unsafe_allow_html=True)
+    th_cols = st.columns(7)
+    
+    if 'active_theme_tab' not in st.session_state:
+        st.session_state.active_theme_tab = "Digital Twin"
+        
+    def set_theme_tab(tab_name):
+        st.session_state.active_theme_tab = tab_name
 
-    tabs = st.tabs([
-        "Digital Twin", 
-        "Global Parts Library", 
-        "Demand Orchestration", 
-        "Installation Cost Reduction", 
-        "Manufacturing Modernization",
-        "Workforce Management"
-    ])
-
-    # Tab 1: Digital Twin
-    with tabs[0]:
-        st.markdown("<h3 style='color: #F87171'>Digital Twin (Ideate/Plan)</h3>", unsafe_allow_html=True)
-        st.markdown("Explains demand, inventory, and supply chain health across Cornerstone operations.")
+    if th_cols[0].button("IDEATE", use_container_width=True): set_theme_tab("Digital Twin")
+    if th_cols[1].button("PLAN", use_container_width=True): set_theme_tab("Demand Orchestration")
+    if th_cols[2].button("SOURCE", use_container_width=True): set_theme_tab("Global Parts Library")
+    if th_cols[3].button("MAKE", use_container_width=True): set_theme_tab("Manufacturing Modernization")
+    if th_cols[4].button("DELIVER", use_container_width=True): set_theme_tab("Installation Cost Reduction")
+    if th_cols[5].button("RETURN", use_container_width=True): set_theme_tab("Installation Cost Reduction")
+    if th_cols[6].button("ENABLE", use_container_width=True): set_theme_tab("Workforce Management")
+    
+    active_tab = st.session_state.active_theme_tab
+    
+    # Tab 0: Digital Twin (Summarisation View)
+    if active_tab == "Digital Twin":
+        st.markdown("<h3 style='color: #F87171'>Digital Twin & Agentic Ecosystem</h3>", unsafe_allow_html=True)
+        st.markdown("""
+        **Summarisation View**: This ecosystem operates as a decentralized intelligence network centered around the **Pi Agent**. 
+        Each specialized agent continuously synchronizes data to resolve complex supply chain problems—such as mitigating regional stockouts—through real-time autonomous actions.
+        """)
         
         col1, col2, col3 = st.columns(3)
-        col1.metric("Lost Revenue Risk", "$1.8M", "+$0.6M")
+        col1.metric("Lost Revenue Risk", "$1.8M", "+$0.6M (Mitigation in progress)")
         col2.metric("Omni Order Rate", "96.8%", "+2.1%")
         col3.metric("Regional Response Time", "4.2h", "-1.8h")
         
-        st.markdown("### System Topology & Data Flow")
-        labels, source, target, value = generate_system_flow_data()
-        fig1 = go.Figure(data=[go.Sankey(
-            node=dict(
-                pad=15, thickness=20,
-                line=dict(color="black", width=0.5), label=labels,
-                color=["#3B82F6", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899", "#D97706"]
-            ),
-            link=dict(source=source, target=target, value=value, color="rgba(156, 163, 175, 0.3)")
-        )])
-        fig1.update_layout(height=350, font_family="Inter", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", margin=dict(l=0, r=0, t=10, b=10))
-        st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("---")
+        
+        col_s1, col_s2 = st.columns([5, 1])
+        search_query = col_s1.text_input("Query", "Analyze the yellow jacket problem and resolve regional stockouts.", label_visibility="collapsed")
+        col_s2.button("✨ Ask Council", use_container_width=True, type="primary")
+        
+        st.markdown("""
+        <div>
+            <span class='tag-pill'>⚠️ Analyze the yellow jacket problem and resolve r...</span>
+            <span class='tag-pill blue'>ℹ️ Resolve shipping delays for NYC Flagship and op...</span>
+            <span class='tag-pill blue' style='float:right;'>⚡ Autonomous Actions ⌄</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col_img1, col_img2, col_img3 = st.columns([1, 3, 1])
+        with col_img2:
+            st.image("/Users/dhaneshdeore/.gemini/antigravity/brain/224f6f7a-955a-48b6-bd25-ae8a208ad803/agent_council_diagram_1774338580788.png")
 
-    # Tab 2: Global Parts Library
-    with tabs[1]:
+    # Tab 1: Global Parts Library
+    elif active_tab == "Global Parts Library":
         st.markdown("<h3 style='color: #34D399'>Global Parts Library (Source)</h3>", unsafe_allow_html=True)
         st.markdown("**Also known as Digital Asset Management (DAM)**")
         st.markdown("Provides product details, standard drawings, and supporting technical material for Cornerstone Building Brands.")
@@ -165,16 +183,16 @@ else:
         selected_part = col_dl1.selectbox("Select Part for Download", df_parts['Part Name'].tolist(), key="dl_part")
         
         col_dl2.markdown("<br>", unsafe_allow_html=True)
-        col_dl2.download_button(label="📥 Standard Drawings (CAD/PDF)", data="mock_cad_data", file_name=f"{selected_part.replace(' ', '_')}_drawings.pdf", use_container_width=True)
+        col_dl2.download_button(label="📥 Standard Drawings (CAD)", data="mock_cad_data", file_name=f"{selected_part.replace(' ', '_')}_drawings.pdf", use_container_width=True)
         
         col_dl3.markdown("<br>", unsafe_allow_html=True)
-        col_dl3.download_button(label="📥 Technical Material (Specs)", data="mock_spec_data", file_name=f"{selected_part.replace(' ', '_')}_specs.pdf", use_container_width=True)
+        col_dl3.download_button(label="📥 Technical Material", data="mock_spec_data", file_name=f"{selected_part.replace(' ', '_')}_specs.pdf", use_container_width=True)
 
-    # Tab 3: Demand Orchestration
-    with tabs[2]:
+    # Tab 2: Demand Orchestration
+    elif active_tab == "Demand Orchestration":
         st.markdown("<h3 style='color: #FBBF24'>Demand Orchestration (Plan)</h3>", unsafe_allow_html=True)
-        st.info(f"**WORKFORCE ALIGNMENT ALERT**: Projected {demand_surge_pct:.1f}% overall demand surge requires active headcount planning. See Workforce Management tab for localized shift adjustments and labor impact.")
-        st.success("**RECOMMENDATION**: Traditional forecasting only looks at history. By adding the CRM Pipeline (future intent) to the Forecast Accuracy (past performance), the AI creates a proactive plan that reduces the Stock-out Risk.")
+        st.info(f"**WORKFORCE ALIGNMENT ALERT**: Projected {demand_surge_pct:.1f}% overall demand surge requires active headcount planning. See Workforce Management tab for shift adjustments.")
+        st.success("**RECOMMENDATION**: By adding the CRM Pipeline (future intent) to the Forecast Accuracy (past performance), the AI creates a proactive plan that reduces Stock-out Risk.")
         
         st.markdown("#### Demand Filters")
         col1, col2, col3 = st.columns(3)
@@ -207,8 +225,8 @@ else:
         fig2.update_layout(height=350, template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1))
         st.plotly_chart(fig2, use_container_width=True)
 
-    # Tab 4: Installation Cost Reduction
-    with tabs[3]:
+    # Tab 3: Installation Cost Reduction
+    elif active_tab == "Installation Cost Reduction":
         st.markdown("<h3 style='color: #60A5FA'>Installation Cost Reduction (Make/Deliver)</h3>", unsafe_allow_html=True)
         st.info("**INSIGHT**: Cornerstone uses the Install Labor Cost metric to identify which products are 'labor-friendly.' If a specific type of siding reduces labor from $85 to $42 per unit, the sales team uses this data to justify a higher price point for that product.")
         
@@ -234,8 +252,8 @@ else:
             fig_inst_time.update_layout(height=300, template="plotly_white", paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
             st.plotly_chart(fig_inst_time, use_container_width=True)
 
-    # Tab 5: Manufacturing Modernization
-    with tabs[4]:
+    # Tab 4: Manufacturing Modernization
+    elif active_tab == "Manufacturing Modernization":
         st.markdown("<h3 style='color: #60A5FA'>Manufacturing Modernization (Make)</h3>", unsafe_allow_html=True)
         
         sensors = generate_sensor_data()
@@ -283,10 +301,10 @@ else:
              fig5.update_layout(height=250, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", margin=dict(l=0, r=0, t=30, b=0))
              st.plotly_chart(fig5, use_container_width=True)
 
-    # Tab 6: Workforce Management
-    with tabs[5]:
+    # Tab 5: Workforce Management
+    elif active_tab == "Workforce Management":
         st.markdown("<h3 style='color: #F472B6'>Workforce Management (Enable)</h3>", unsafe_allow_html=True)
-        st.info(f"**FORECAST ALIGNMENT**: To meet the {demand_surge_pct:.1f}% demand surge forecasted in Demand Orchestration, plant-level labor must scale. PL-101 requires +12 headcount adjustment for upcoming shifts.")
+        st.info(f"**FORECAST ALIGNMENT**: To meet the {demand_surge_pct:.1f}% demand surge forecasted in Demand Orchestration, PL-101 requires +12 headcount adjustment for upcoming shifts.")
         
         col_w1, col_w2 = st.columns(2)
         with col_w1:
